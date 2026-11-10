@@ -35,7 +35,7 @@ jobs:
               browser = p.chromium.launch(headless=True)
               page = browser.new_page()
               
-              # Load your website feed URL
+              # Target the direct WordPress post articles database feed layout
               page.goto('https://cramerlaw.co.nz')
               
               # Explicitly wait 10 seconds to clear the screening script completely
