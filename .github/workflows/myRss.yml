@@ -2,9 +2,9 @@ name: Pull and Publish RSS Feed
 
 on:
   schedule:
-    # This runs the automation automatically every day at midnight (UTC)
+    # Runs automatically daily at midnight
     - cron: '0 0 * * *'
-  workflow_dispatch: # This allows you to run it manually anytime
+  workflow_dispatch: # Allows manual testing
 
 permissions:
   contents: write
@@ -16,11 +16,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Fetch RSS Feed
-        uses: Promptly-Technologies-LLC/rss-feed-action@v2
-        with:
-          feed_url: 'https://cramerlaw.co.nz/feed/'
-          output_file: 'feed.json'
+      - name: Fetch RSS Feed Raw XML
+        run: |
+          curl -sL "https://cramerlaw.co.nz" -o feed.xml
 
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
