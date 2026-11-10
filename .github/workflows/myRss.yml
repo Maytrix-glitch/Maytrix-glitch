@@ -35,13 +35,11 @@ jobs:
               browser = p.chromium.launch(headless=True)
               page = browser.new_page()
               
-              # Target the direct WordPress post articles database feed layout
+              # Pulling the direct core articles feed parameter
               page.goto('https://cramerlaw.co.nz')
-              
-              # Explicitly wait 10 seconds to clear the screening script completely
               time.sleep(10)
               
-              # Extract the fully loaded XML content behind the firewall page
+              # Extracting the content
               content = page.content()
               
               with open('feed.xml', 'w', encoding='utf-8') as f:
