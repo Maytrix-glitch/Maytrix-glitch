@@ -20,26 +20,34 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Dependencies
-        run: pip install requests
+      - name: Install Browser Automation Tool
+        run: |
+          pip install playwright
+          playwright install chromium
 
-      - name: Fetch Feed Bypassing Firewall
+      - name: Fetch Feed Passing Security Challenge
         run: |
           python -c "
-          import requests
-          url = 'https://cramerlaw.co.nz'
-          headers = {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-              'Accept-Language': 'en-US,en;q=0.5'
-          }
-          session = requests.Session()
-          # First request to establish session and cookies
-          session.get('https://cramerlaw.co.nz', headers=headers)
-          # Second request to pull the pure RSS XML data
-          response = session.get(url, headers=headers)
-          with open('feed.xml', 'w', encoding='utf-8') as f:
-              f.write(response.text)
+          from playwright.sync_api import sync_playwright
+          import time
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              page = browser.new_page()
+              
+              # Load your website feed URL
+              page.goto('https://cramerlaw.co.nz')
+              
+              # Explicitly wait 7 seconds to clear the 'One moment, please' script
+              time.sleep(7)
+              
+              # Extract the fully loaded XML content behind the firewall page
+              content = page.content()
+              
+              with open('feed.xml', 'w', encoding='utf-8') as f:
+                  f.write(content)
+                  
+              browser.close()
           "
 
       - name: Commit and Push Changes
