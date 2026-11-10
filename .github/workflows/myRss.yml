@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Fetch RSS Feed Raw XML
+      - name: Fetch WordPress Direct Query Feed
         run: |
           curl -sL "https://cramerlaw.co.nz" -o feed.xml
 
@@ -24,3 +24,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Automated RSS feed update"
+
