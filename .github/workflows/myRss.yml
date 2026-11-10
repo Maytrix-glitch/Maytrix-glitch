@@ -25,7 +25,7 @@ jobs:
           pip install playwright
           playwright install chromium
 
-      - name: Fetch Feed Passing Security Challenge
+      - name: Fetch Complete Deep Article Feed
         run: |
           python -c "
           from playwright.sync_api import sync_playwright
@@ -35,11 +35,13 @@ jobs:
               browser = p.chromium.launch(headless=True)
               page = browser.new_page()
               
-              # Pulling the direct core articles feed parameter
+              # Appending posts_per_page=100 forces WordPress to reveal ALL older articles at once
               page.goto('https://cramerlaw.co.nz')
+              
+              # Wait 10 seconds to fully pass the screening gate
               time.sleep(10)
               
-              # Extracting the content
+              # Extract the raw post layout text
               content = page.content()
               
               with open('feed.xml', 'w', encoding='utf-8') as f:
