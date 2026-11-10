@@ -38,8 +38,8 @@ jobs:
               # Load your website feed URL
               page.goto('https://cramerlaw.co.nz')
               
-              # Explicitly wait 7 seconds to clear the 'One moment, please' script
-              time.sleep(7)
+              # Explicitly wait 10 seconds to clear the screening script completely
+              time.sleep(10)
               
               # Extract the fully loaded XML content behind the firewall page
               content = page.content()
